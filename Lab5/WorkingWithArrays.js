@@ -18,10 +18,69 @@ export default function WorkingWithArrays(app) {
     }
     //if no query sent
     res.json(todos);
-});
+  });
+
+  // create a new todo
+  app.get("/lab5/todos/create", (req, res) => {
+    const newTodo = {
+        id: new Date().getTime(),
+        title: "New Task",
+        completed: false,
+    };
+    todos.push(newTodo);
+    res.json(todos);
+  });
+
+  // update a todo
+  app.post("/lab5/todos", (req, res) => {
+    const newTodo = { ...req.body,  id: new Date().getTime() };
+    todos.push(newTodo);
+    res.json(newTodo);
+  });
+
+  // delete a todo
+  app.get("/lab5/todos/:id/delete", (req, res) => {
+    const { id } = req.params;
+    const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
+    todos.splice(todoIndex, 1);
+    res.json(todos);
+  });
+
+  // get a todo by id
   app.get("/lab5/todos/:id", (req, res) => {
     const { id } = req.params;
     const todo = todos.find((t) => t.id === parseInt(id));
     res.json(todo);
   });
+
+  // update a todo by id
+  app.get("/lab5/todos/:id/title/:title", (req, res) => {
+    const { id, title } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+    todo.title = title;
+    res.json(todos);
+  });
+
+  // update completed status of a todo by id
+  app.get("/lab5/todos/:id/completed/:completed", (req, res) => {
+    const { id, completed } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+
+    todo.completed = completed === 'true';
+
+    res.json(todo);
+  });
+
+  // update description of a todo by id
+  app.get("/lab5/todos/:id/description/:description", (req, res) => {
+    const { id, description } = req.params;
+    const todo = todos.find((t) => t.id === parseInt(id));
+
+    todo.description = description;
+
+    res.json(todo);
+  })
+
+
+
 }
