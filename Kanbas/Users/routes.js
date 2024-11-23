@@ -2,8 +2,6 @@ import * as dao from "./dao.js";
 import * as courseDao from "../Courses/dao.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
 
-// let currentUser = null;
-
 export default function UserRoutes(app) {
     const createUser = (req, res) => { };
     const deleteUser = (req, res) => { };
@@ -71,27 +69,19 @@ export default function UserRoutes(app) {
         res.json(newCourse);
     };
     
-    //For Enrollment
     const enrollInCourse = (req, res) => {
         const currentUser = req.session["currentUser"];
-        // const { currentUserID } = req.params.userId;
         const { courseId } = req.params;
-        // console.log(currentUser);
-        // console.log("Course ID: ", courseId);
         enrollmentsDao.enrollUserInCourse(currentUser._id, courseId);
         const courses = courseDao.findCoursesForEnrolledUser(currentUser._id);
         res.json(courses);
-        // res.sendStatus(204);
     };
     const unEnrollFromCourse = (req, res) => {
         const currentUser = req.session["currentUser"];
         const { courseId } = req.params;
-        // console.log(currentUser);
-        // console.log("Course ID: ", courseId);
         enrollmentsDao.unEnrollUserFromCourse(currentUser._id, courseId);
         const courses = courseDao.findCoursesForEnrolledUser(currentUser._id);
         res.json(courses);
-        // res.sendStatus(204);
     };
 
     
