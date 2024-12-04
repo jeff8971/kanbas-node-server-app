@@ -1,4 +1,4 @@
-export default[
+export default [
   {
     "_id": "A101",
     "title": "Go Basics Assignment",

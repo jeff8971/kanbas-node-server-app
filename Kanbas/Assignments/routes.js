@@ -20,11 +20,14 @@ export default function AssignmentRoutes(app) {
     });
     app.put("/api/assignment/:assignmentId", (req, res) => {
         const { assignmentId } = req.params;
-
-        dao.updateAssignment(assignmentId, req.body);
-
-        res.sendStatus(204);
+        const updatedAssignment = dao.updateAssignment(assignmentId, req.body);
+        if (updatedAssignment) {
+            res.send(updatedAssignment); // Send the updated assignment back
+        } else {
+            res.status(404).send({ error: "Assignment not found" });
+        }
     });
+    
     app.delete("/api/assignment/:assignmentId", (req, res) => {
         const { assignmentId } = req.params;
 
