@@ -8,11 +8,13 @@ export default function EnrollmentsRoutes(app) {
     });
     app.post("/api/enrollments/add/:userId/:courseId", (req, res) => {
         const { userId, courseId } = req.params;
-
+    
         enrollmentsDao.enrollUserInCourse(userId, courseId);
-
+    
+        console.log("Enrollment added:", { userId, courseId });
         res.sendStatus(200);
     });
+    
     app.post("/api/enrollments/remove/:userId/:courseId", (req, res) => {
         const { userId, courseId } = req.params;
 
