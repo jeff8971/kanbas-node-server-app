@@ -28,4 +28,4 @@ export function updateAssignment(assignmentId, updatedAssignment) {
     Object.assign(oldAssignment, updatedAssignment);
 
     return oldAssignment;
-}
+}                                                                                                                                                                                                                                                                                                                        
