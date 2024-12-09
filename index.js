@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(cors({credentials: true, origin: process.env.NETLIFY_URL || "http://localhost:3000"}));
 
 const sessionOptions = {
-    secret: process.env.SESSION_SECRET || "kanbas",
+    secret: process.env.SESSION_SECRET || "super secret session phrase",
     resave: false,
     saveUninitialized: false
 };
