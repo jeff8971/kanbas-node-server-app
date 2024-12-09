@@ -23,7 +23,13 @@ mongoose.connect(CONNECTION_STRING);
 // Configure CORS
 app.use(cors({
     credentials: true,
-    origin: process.env.NETLIFY_URL || "http://localhost:3000"
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    }
 }));
 
 // Configure Session
