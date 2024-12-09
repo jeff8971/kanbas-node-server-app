@@ -13,18 +13,31 @@ import AssignmentRoutes from './Kanbas/Assignments/routes.js';
 import PoepleRoutes from './Kanbas/People/routes.js';
 import EnrollmentsRoutes from './Kanbas/Enrollments/routes.js';
 
-// Initialize Express App
-const app = express();
+
 
 // MongoDB Connection
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
 mongoose.connect(CONNECTION_STRING);
 
-// Configure CORS
-app.use(cors({
+// Initialize Express App
+const app = express();
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        const allowedOrigins = [process.env.NETLIFY_URL || "http://localhost:3000"];
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
-    origin: process.env.NETLIFY_URL || "http://localhost:3000"
-}));
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
+// Configure CORS
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Configure Session
 const sessionOptions = {
