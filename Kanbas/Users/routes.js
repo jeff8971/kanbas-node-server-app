@@ -100,13 +100,10 @@ export default function UserRoutes(app) {
                 res.json(courses);
                 return;
             }
-
             let { uid } = req.params;
-
             if (uid === "current") {
                 uid = currentUser._id;
             }
-
             const courses = await enrollmentsDao.findCoursesForUser(uid);
 
             res.json(courses);

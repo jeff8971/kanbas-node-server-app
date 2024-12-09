@@ -18,6 +18,8 @@ import EnrollmentsRoutes from './Kanbas/Enrollments/routes.js';
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
 mongoose.connect(CONNECTION_STRING);
 const app = express()
+  
+app.use(express.json());
 
 app.use(cors({credentials: true, origin: process.env.NETLIFY_URL || "http://localhost:3000"}));
 
@@ -38,8 +40,7 @@ if (process.env.NODE_ENV !== "development") {
 app.use(
     session(sessionOptions)
 );
-  
-app.use(express.json());
+
 
 Hello(app);
 Lab5(app);
