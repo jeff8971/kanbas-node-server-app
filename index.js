@@ -14,14 +14,17 @@ import PoepleRoutes from './Kanbas/People/routes.js';
 import EnrollmentsRoutes from './Kanbas/Enrollments/routes.js';
 
 
-
+app.use(cors({credentials: true, origin: process.env.NETLIFY_URL || "http://localhost:3000"}));
+app.use(
+    session(sessionOptions)
+);
+app.use(express.json());
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
 mongoose.connect(CONNECTION_STRING);
 const app = express()
   
-app.use(express.json());
 
-app.use(cors({credentials: true, origin: process.env.NETLIFY_URL || "http://localhost:3000"}));
+
 
 const sessionOptions = {
     secret: process.env.SESSION_SECRET || "super secret session phrase",
@@ -37,9 +40,7 @@ if (process.env.NODE_ENV !== "development") {
         domain: process.env.NODE_SERVER_DOMAIN,
     };
 }  
-app.use(
-    session(sessionOptions)
-);
+
 
 
 Hello(app);
