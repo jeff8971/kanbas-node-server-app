@@ -7,7 +7,14 @@ export const createUser = (user) => {
 };
 
 export const findAllUsers = () => model.find();
-export const findUserById = (userId) => model.findById(userId);
+const findUserById = async (userId) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+      throw new Error(`Invalid ObjectId: ${userId}`);
+  }
+
+  return UserModel.findById(userId); // Only valid IDs reach here
+};
+
 export const findUserByUsername = (username) => model.findOne({ username: username });
 export const findUserByCredentials = (username, password) => {
   return model.findOne({ username, password });

@@ -1,6 +1,8 @@
 import * as dao from "./dao.js";
 import * as courseDao from "../Courses/dao.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
+const mongoose = require("mongoose");
+
 
 export default function UserRoutes(app) {
     const createUser = async (req, res) => {
@@ -31,8 +33,24 @@ export default function UserRoutes(app) {
     };
 
     const findUserById = async (req, res) => {
-        const user = await dao.findUserById(req.params.userId);
-        res.json(user);
+        const { userId } = req.params;
+    
+        // Validate the ID
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ error: `Invalid user ID: ${userId}` });
+        }
+    
+        try {
+            const user = await dao.findUserById(userId);
+    
+            if (!user) {
+                return res.status(404).json({ error: "User not found" });
+            }
+    
+            res.json(user);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
     };
     
     const updateUser = async (req, res) => {
