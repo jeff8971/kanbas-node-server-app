@@ -1,9 +1,16 @@
 import model from "./model.js";
+import mongoose from "mongoose";
 
-
-export const createUser = (user) => {
-  delete user._id;
-  return model.create(user);
+export const createUser = async (user) => {
+  try {
+    if (!user.username || !user.password) {
+      throw new Error("Username and password are required");
+    }
+    delete user._id;
+    return await model.create(user);
+  } catch (error) {
+    throw new Error(`Error creating user: ${error.message}`);
+  }
 };
 
 export const findAllUsers = () => model.find();
@@ -12,7 +19,7 @@ const findUserById = async (userId) => {
       throw new Error(`Invalid ObjectId: ${userId}`);
   }
 
-  return UserModel.findById(userId); // Only valid IDs reach here
+  return model.findById(userId); // Only valid IDs reach here
 };
 
 export const findUserByUsername = (username) => model.findOne({ username: username });
