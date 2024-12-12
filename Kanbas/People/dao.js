@@ -18,3 +18,5 @@ export function deletePersonInCourse(userId, courseId){
     Database.enrollments = enrollments.filter(
         (enrollment) => enrollment.user !== userId || enrollment.course !== courseId);
 }
+
+
