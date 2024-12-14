@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 const assignmentsSchema = new mongoose.Schema({
     title: String,
-    course: String,
     description: String,
-    availabilityDate: String,
-    dueDate: String,
+    course: { type: mongoose.Schema.Types.ObjectId, ref: "CourseModel" },
+    availabilityDate: Date,
+    dueDate: Date,
     points: Number,
 },
     { collection: "assignments" }

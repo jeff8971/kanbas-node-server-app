@@ -1,29 +1,19 @@
 import model from "./model.js";
 
-export function findAllAssignments() {
-    return model.find();
+export async function findAllAssignments() {
+    return await model.find({ course: courseId });
 }
 
-export function createAssignment(assignment) {
+export async function createAssignment(assignment) {
     delete assignment._id;
-
-    return model.create(assignment);
+    return await model.create(assignment);
 }
 
-export function deleteAssignment(assignmentId) {
-    return model.deleteOne({ _id: assignmentId });
+export async function deleteAssignment(assignmentId) {
+    return await model.deleteOne({ _id: assignmentId });
 }
 
-export function updateAssignment(assignmentId, updatedAssignment) {
-    return model.updateOne({ _id: assignmentId }, updatedAssignment);
+export async function updateAssignment(assignmentId, updatedAssignment) {
+    return await model.updateOne({ _id: assignmentId }, updatedAssignment);
 }
 
-export function retrieveAssignment(assignmentId) {
-    const assignment = model.findOne({ _id: assignmentId });
-
-    return assignment;
-}
-
-export function retrieveCourseAssignments(courseId) {
-    return model.find({ course: courseId });
-}
