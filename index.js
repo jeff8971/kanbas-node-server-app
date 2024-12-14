@@ -11,6 +11,7 @@ import AssignmentRoutes from './Kanbas/Assignments/routes.js';
 import EnrollmentRoutes from './Kanbas/Enrollments/routes.js';
 import mongoose from "mongoose";
 
+import cors from 'cors';
 // Connect to MongoDB
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
 mongoose.connect(CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -21,12 +22,13 @@ mongoose.connect(CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology:
 const app = express();
 
 // CORS Configuration
-app.use(
-  cors({
-    credentials: true,
-    origin: process.env.NETLIFY_URL || "http://localhost:3000",
-  })
-);
+app.use(cors({
+  origin: [
+      'http://localhost:3000',
+      'https://kanbas-react-web-app-cs5610-fa24-jeff.netlify.app'
+  ],
+  credentials: true
+}));
 
 // Session Configuration
 const sessionOptions = {
