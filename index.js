@@ -14,41 +14,61 @@ import "dotenv/config";
 
 
 
-const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING //|| "mongodb://127.0.0.1:27017/kanbas"
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
 mongoose.connect(CONNECTION_STRING);
 
+// Initialize Express App
 const app = express();
 
-app.use(
-  cors({
+const corsOptions = {
+    origin: (origin, callback) => {
+        const allowedOrigins = [process.env.NETLIFY_URL || "http://localhost:3000"];
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
-    origin: process.env.NETLIFY_URL || "http://localhost:3000",
-  })
-);
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
 
+
+// Configure CORS
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
+// Configure Session
 const sessionOptions = {
-  secret: process.env.SESSION_SECRET || "kanbas",
-  resave: false,
-  saveUninitialized: false,
+    secret: process.env.SESSION_SECRET || "super secret session phrase",
+    resave: false,
+    saveUninitialized: false
 };
 
 if (process.env.NODE_ENV !== "development") {
-  sessionOptions.proxy = true;
-  sessionOptions.cookie = {
-    sameSite: "none",
-    secure: true,
-    domain: process.env.NODE_SERVER_DOMAIN,
-  };
+    sessionOptions.proxy = true;
+    sessionOptions.cookie = {
+        sameSite: "none",
+        secure: true,
+        domain: process.env.NODE_SERVER_DOMAIN,
+    };
 }
+
 app.use(session(sessionOptions));
 
-
+// Parse JSON Requests
 app.use(express.json());
+
+// Register Routes
 Hello(app);
 Lab5(app);
 UserRoutes(app);
 CourseRoutes(app);
 ModuleRoutes(app);
 AssignmentRoutes(app);
-EnrollmentRoutes(app);
-app.listen(process.env.PORT || 4000);
+PoepleRoutes(app);
+EnrollmentsRoutes(app);
+
+// Start the Server
+app.listen(process.env.PORT || 4000)
