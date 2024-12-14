@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
+const assignmentSchema = new mongoose.Schema(
+   {
+      title: String,
+      description: String,
+      course: { type: mongoose.Schema.Types.ObjectId, ref: "CourseModel" },
+      due: Date,
+      available: Date,
+      points: Number,
 
-const assignmentsSchema = new mongoose.Schema({
-    title: String,
-    course: String,
-    description: String,
-    availabilityDate: String,
-    dueDate: String,
-    points: Number,
-},
-    { collection: "assignments" }
+   },
+   { collection: "assignments" }
 );
+export default assignmentSchema;
 
-export default assignmentsSchema;
+

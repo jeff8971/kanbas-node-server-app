@@ -1,31 +1,31 @@
-import Database from "../Database/index.js";
 
-export function createAssignment(assignment) {
-    Database.assignments = [...Database.assignments, assignment];
+import model from "./model.js";
+export async function findAssignmentsForCourse(courseId) {
+    
+    return await model.find({ course: courseId });
 
-    return assignment;
+    // const { assignments } = Database;
+    // return assignments.filter((assignment) => assignment.course === courseId);
 }
 
-export function deleteAssignment(assignmentId) {
-    Database.assignments = Database.assignments.filter((assignment) => assignment._id !== assignmentId);
+export async function createAssignment(assignment) {
+    delete assignment._id;
+    return await model.create(assignment);
+    // const newAssignment = { ...assignment, _id: Date.now().toString() };
+    // Database.assignments = [...Database.assignments, newAssignment];
+    // return newAssignment;
 }
-
-export function retrieveAssignment(assignmentId) {
-    const assignment = Database.assignments.find((assignment) => assignment._id === assignmentId);
-
-    return assignment;
+export async function deleteAssignment(assignmentId) {
+    return await model.deleteOne({ _id: assignmentId });
+    // const { assignments } = Database;
+    // Database.assignments = assignments.filter((assignment) => assignment._id !== assignmentId);
 }
+export async function updateAssignments(assignmentId, assignmentUpdates) {
 
-export function retrieveCourseAssignments(courseId) {
-    const assignments = Database.assignments.filter((assignment) => assignment.course === courseId);
+    return await model.updateOne({ _id: assignmentId }, assignmentUpdates);
 
-    return assignments;
-}
-
-export function updateAssignment(assignmentId, updatedAssignment) {
-    const oldAssignment = Database.assignments.find((a) => a._id === assignmentId);
-
-    Object.assign(oldAssignment, updatedAssignment);
-
-    return oldAssignment;
+    // const { assignments } = Database;
+    // const assignment = assignments.find((assignment) => assignment._id === assignmentId);
+    // Object.assign(assignment, assignmentUpdates);
+    // return assignment;
 }
